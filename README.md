@@ -16,17 +16,37 @@ DocLens는 조건이 있는 공고에 서류를 제출할 때, 공고의 요구�
 
 ## 현재 진행 단계
 
-요구사항과 서비스 흐름을 구체화하는 기획·설계 단계입니다. 백엔드와 프론트엔드를 하나의 저장소에서 관리하는 모노레포로 진행합니다. 백엔드는 Java·Spring을 사용할 예정이며, 프론트엔드는 React를 검토 중입니다. 세부 기술 구성과 MVP 범위는 아직 결정하지 않았으며, 서비스 구현은 시작하지 않았습니다.
-
-예정 구조는 다음과 같습니다. 각 프로젝트 디렉토리는 프로젝트 초기화 시 생성합니다.
+백엔드·프론트엔드를 함께 관리하는 모노레포입니다. Java 17·Maven·Spring Boot 3.5 기반의 서버 실행 환경과 상태 확인 API, React·TypeScript·Vite·ESLint 프론트엔드 및 Docker 개발·배포 구성을 추가했습니다. 공고 분석과 서류 검증 기능은 아직 구현하지 않았습니다.
 
 ```text
 doclens/
-├── backend/     # Java·Spring 백엔드 프로젝트
-├── frontend/    # 프론트엔드 프로젝트 (React 검토 중)
-├── .gitignore
-└── README.md
+├── backend/           # Spring Boot API, Maven, Dockerfile
+├── frontend/          # React, Vite, Nginx, Dockerfile
+├── Makefile           # 통합 실행·종료·로그 명령
+├── compose.yaml       # 배포용: 빌드 산출물 실행
+├── compose.dev.yaml   # 개발용: 소스 연결
+└── docs/docker.md     # 실행 및 배포 안내
 ```
+
+## Docker로 실행
+
+루트에서 다음 명령 하나로 백엔드와 프론트엔드를 함께 빌드·실행하고 정상 상태까지 기다립니다. Docker와 Make가 필요합니다.
+
+```bash
+make dev
+```
+
+종료는 `make down`, 통합 로그는 `make logs`, 서비스 상태는 `make status`로 확인합니다. Java 코드를 수정한 뒤에는 `make backend-restart`를 실행합니다. React 수정은 자동 반영됩니다.
+
+화면은 `http://localhost:5173`, API 연결 확인은 `http://localhost:5173/api/health`입니다.
+
+배포 구성:
+
+```bash
+make prod
+```
+
+배포 구성 종료는 `make prod-down`입니다. 화면과 API는 `http://localhost:8080`으로 접근합니다. 개발 환경과 동시에 실행할 때는 배포 포트를 변경해야 합니다. 준비 사항, 재시작, 로그, 종료 및 서버 배포 시 고려 사항은 [Docker 실행 안내](docs/docker.md)를 참고하세요.
 
 ## 검증 범위
 

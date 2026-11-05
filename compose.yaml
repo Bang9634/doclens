@@ -1,0 +1,36 @@
+name: doclens
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: production
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 30s
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8080/api/health"]
+      interval: 10s
+      timeout: 3s
+      start_period: 30s
+      retries: 12
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
