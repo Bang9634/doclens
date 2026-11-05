@@ -1,0 +1,41 @@
+# Local AI instructions and project context
+/AGENTS.md
+/.ai-context/
+
+# macOS / Windows metadata
+.DS_Store
+._*
+.AppleDouble/
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Local editor settings and temporary files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs
+*.log
+
+# Common generated outputs (technology stack not yet selected)
+node_modules/
+.next/
+dist/
+build/
+target/
+.gradle/
+__pycache__/
+*.py[cod]
+.venv/
+.coverage
+.pytest_cache/
+coverage/
